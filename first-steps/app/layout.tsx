@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
+import { Navbar } from "@/components";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,20 +35,7 @@ export default function RootLayout({
               This is part of the layout
             </h1>
           </div>
-          <nav className="flex justify-center gap-4">
-            <Link href="/" className="text-blue-500">
-              Home
-            </Link>
-            <Link href="/about" className="text-blue-500">
-              About
-            </Link>
-            <Link href="/contact" className="text-blue-500">
-              Contact
-            </Link>
-            <Link href="/pricing" className="text-blue-500">
-              Pricing
-            </Link>
-          </nav>
+          <Navbar />
         </header>
         {children}
       </body>
