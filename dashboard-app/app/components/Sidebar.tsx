@@ -1,17 +1,21 @@
 import Image from "next/image";
-import { IoLogoReact } from "react-icons/io5";
+import {
+  IoLogoReact,
+  IoCalculatorOutline,
+  IoSquareOutline,
+} from "react-icons/io5";
 import { SidebarMenuItem } from "./SidebarMenuItem";
 
 const menuItems = [
   {
     path: "/dashboard/main",
-    icon: <IoLogoReact className="w-6 h-6" />,
+    icon: <IoSquareOutline className="w-6 h-6" />,
     title: "Main",
     subTitle: "Main Overview",
   },
   {
     path: "/dashboard/counter",
-    icon: <IoLogoReact className="w-6 h-6" />,
+    icon: <IoCalculatorOutline className="w-6 h-6" />,
     title: "Counter",
     subTitle: "Counter Overview",
   },

@@ -9,6 +9,11 @@ interface Props {
   subTitle: string;
 }
 
+const styles = {
+  active: "bg-blue-800 text-white",
+  inactive: "hover:bg-white/5 text-slate-300",
+};
+
 export const SidebarMenuItem = ({ path, icon, title, subTitle }: Props) => {
   const pathname = usePathname();
   const isActive = pathname === path;
@@ -16,7 +21,7 @@ export const SidebarMenuItem = ({ path, icon, title, subTitle }: Props) => {
     <Link
       href={path}
       className={`w-full px-2 inline-flex space-x-2 items-center border-b border-slate-700 py-3 ${
-        isActive ? "bg-blue-800 text-white" : "hover:bg-white/5 text-slate-300"
+        isActive ? styles.active : styles.inactive
       } transition ease-linear duration-150`}
     >
       <div>{icon}</div>
