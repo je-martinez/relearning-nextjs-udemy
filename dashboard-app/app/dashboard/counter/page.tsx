@@ -1,4 +1,4 @@
-import { CartCounter } from "@/app/shopping-cart";
+import { CartCounter, CartCounterForServer } from "@/app/shopping-cart";
 
 export const metadata = {
   title: "Counter",
@@ -11,8 +11,7 @@ export default function CounterPage() {
       <span className="text-2xl font-bold">Welcome to the Counter Page</span>
       <div className="flex flex-col items-center justify-center w-full h-full gap-2">
         <CartCounter value={10} />
-        <CartCounter value={10} />
-        <CartCounter value={10} />
+        <CartCounterForServer value={10} />
       </div>
     </div>
   );
