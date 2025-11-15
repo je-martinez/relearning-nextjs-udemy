@@ -13,6 +13,8 @@ const getPokemons = async ({
 
   const { results: pokemons } = response;
 
+  // throw new Error("Error fetching pokemons");
+
   return pokemons.map((pokemon) => ({
     id: Number(pokemon.url.split("/").at(-2)!),
     name: pokemon.name,
@@ -28,7 +30,7 @@ export default async function PokemonsPage() {
   const pokemons = await getPokemons({ limit: 250, offset: 0 });
   return (
     <div className="flex flex-col">
-      <h1 className="text-2xl font-bold">Pokemons</h1>
+      <h1 className="text-2xl font-bold p-4">Pokemons</h1>
       <PokemonGrid pokemons={pokemons} />
     </div>
   );
