@@ -1,38 +1,52 @@
 import { PokemonDetailsResponse } from "@/app/pokemons";
 import { Metadata } from "next";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const { id } = await params;
-  const { name, sprites } = await getPokemon(id);
-  return {
-    title: `#${id} - ${capitalize(name)} - Pokemon`,
-    description: `${capitalize(name)} is a pokemon from the Pokémon series.`,
-    openGraph: {
+  try {
+    const { id } = await params;
+    const { name, sprites } = await getPokemon(id);
+    return {
       title: `#${id} - ${capitalize(name)} - Pokemon`,
       description: `${capitalize(name)} is a pokemon from the Pokémon series.`,
-      images: [
-        {
-          url: sprites.front_default,
-        },
-      ],
-    },
-  } satisfies Metadata;
+      openGraph: {
+        title: `#${id} - ${capitalize(name)} - Pokemon`,
+        description: `${capitalize(
+          name
+        )} is a pokemon from the Pokémon series.`,
+        images: [
+          {
+            url: sprites.front_default,
+          },
+        ],
+      },
+    } satisfies Metadata;
+  } catch (error) {
+    return {
+      title: "404 - Page Not Found",
+      description: "The page you are looking for does not exist.",
+    } satisfies Metadata;
+  }
 }
 
 interface Props {
   params: { id: string };
 }
 const getPokemon = async (id: string): Promise<PokemonDetailsResponse> => {
-  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
-    cache: "force-cache",
-  });
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+      cache: "force-cache",
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    notFound();
+  }
 };
 
 export default async function PokemonPage({ params }: Props) {
