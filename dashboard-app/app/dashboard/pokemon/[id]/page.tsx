@@ -1,4 +1,5 @@
-import { PokemonDetailsResponse } from "@/app/pokemons";
+import { PokemonDetailsResponse, PokemonResponse } from "@/app/pokemons";
+import { Result } from "@/app/pokemons/interfaces/pokemons-response";
 import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -7,7 +8,19 @@ const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateStaticParams() {
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+  const data: PokemonResponse = await response.json();
+  return data.results.map((pokemon: Result) => ({
+    id: pokemon.url.split("/").at(-2)!,
+  })) as { id: string }[];
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   try {
     const { id } = await params;
     const { name, sprites } = await getPokemon(id);
@@ -41,6 +54,10 @@ const getPokemon = async (id: string): Promise<PokemonDetailsResponse> => {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
       cache: "force-cache",
+      // Revalidate the page every 24 hours
+      // next: {
+      //   revalidate: 60 * 60 * 24,
+      // },
     });
     const data = await response.json();
     return data;
