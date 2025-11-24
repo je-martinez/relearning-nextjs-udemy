@@ -4,6 +4,10 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+interface Props {
+  params: { name: string };
+}
+
 const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
@@ -16,11 +20,7 @@ export async function generateStaticParams() {
   })) as { name: string }[];
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ name: string }>;
-}) {
+export async function generateMetadata({ params }: Props) {
   try {
     const { name } = await params;
     const { sprites } = await getPokemon(name);
@@ -47,9 +47,6 @@ export async function generateMetadata({
   }
 }
 
-interface Props {
-  params: { name: string };
-}
 const getPokemon = async (name: string): Promise<PokemonDetailsResponse> => {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`, {
