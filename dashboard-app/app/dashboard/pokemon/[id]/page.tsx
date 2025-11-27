@@ -79,7 +79,7 @@ export default async function PokemonPage({ params }: Props) {
               src={sprites.other?.dream_world.front_default ?? ""}
               width={150}
               height={150}
-              alt={`Imagen del pokemon ${pokemon.name}`}
+              alt={`Image of the pokemon ${pokemon.name}`}
               className="mb-5"
             />
 

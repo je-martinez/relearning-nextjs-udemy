@@ -1,3 +1,5 @@
+import { SimpleWidget } from "@/app/components";
+
 export const metadata = {
   title: "Main",
   description: "Main Page",
@@ -5,8 +7,13 @@ export const metadata = {
 
 export default function MainPage() {
   return (
-    <div>
-      <h1>Main</h1>
+    <div className="text-black">
+      <h1 className="mt-2 text-2xl font-bold">Dashboard</h1>
+      <p className="text-sm text-gray-500">Welcome to the dashboard</p>
+
+      <div className="flex flex-wrap items-center justify-center gap-4 p-2">
+        <SimpleWidget />
+      </div>
     </div>
   );
 }
