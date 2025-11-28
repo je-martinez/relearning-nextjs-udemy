@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IoArrowForwardOutline, IoCafeOutline } from "react-icons/io5";
+import { IoArrowForwardOutline } from "react-icons/io5";
 
 interface Props {
   title: string;
