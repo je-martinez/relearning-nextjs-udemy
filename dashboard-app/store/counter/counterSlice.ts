@@ -3,14 +3,23 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface CounterState {
   value: number;
+  isReady: boolean;
 }
 
-const initialState = { value: 0 } satisfies CounterState as CounterState;
+const initialState = {
+  value: 0,
+  isReady: false,
+} satisfies CounterState as CounterState;
 
 const counterSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
+    initialize(state, action: PayloadAction<number>) {
+      if (state.isReady) return;
+      state.isReady = true;
+      state.value = action.payload;
+    },
     increment(state) {
       state.value++;
     },
@@ -26,6 +35,6 @@ const counterSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount, reset } =
+export const { initialize, increment, decrement, incrementByAmount, reset } =
   counterSlice.actions;
 export const counterReducer = counterSlice.reducer;

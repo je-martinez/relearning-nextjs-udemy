@@ -1,10 +1,25 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { decrement, increment, reset } from "@/store/counter/counterSlice";
+import {
+  decrement,
+  increment,
+  initialize,
+  reset,
+} from "@/store/counter/counterSlice";
+import { useEffect } from "react";
 
-export const CartCounterRedux = () => {
+interface Props {
+  value?: number;
+}
+
+export const CartCounterRedux = ({ value = 0 }: Props) => {
   const dispatch = useAppDispatch();
   const { value: count } = useAppSelector((state) => state.counter);
+
+  useEffect(() => {
+    dispatch(initialize(value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const incrementCount = () => {
     dispatch(increment());
