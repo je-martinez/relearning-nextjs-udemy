@@ -62,9 +62,11 @@ export const PokemonCard = ({ pokemon }: Props) => {
             </button>
             <div className="pl-3">
               <p className="text-sm font-medium text-gray-800 leading-none">
-                Mark as favorite
+                {isFavorite ? "Remove from favorites" : "Add to favorites"}
               </p>
-              <p className="text-xs text-gray-500">View your campaigns</p>
+              <p className="text-xs text-gray-500">
+                You can remove it from favorites at any time.
+              </p>
             </div>
           </div>
         </div>
