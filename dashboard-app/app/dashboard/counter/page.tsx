@@ -1,5 +1,6 @@
 import {
   CartCounter,
+  CartCounterApi,
   CartCounterForServer,
   CartCounterRedux,
 } from "@/app/shopping-cart";
@@ -17,6 +18,7 @@ export default function CounterPage() {
         <CartCounterRedux value={10} />
         <CartCounter value={10} />
         <CartCounterForServer value={10} />
+        <CartCounterApi />
       </div>
     </div>
   );
