@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { counterReducer } from "./counter/counterSlice";
+import { pokemonsReducer } from "./pokemons/pokemonsSlice";
 
 const reducers = {
   counter: counterReducer,
+  pokemons: pokemonsReducer,
 };
 
 export const makeStore = () => {
