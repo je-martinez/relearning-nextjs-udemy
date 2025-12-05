@@ -1,7 +1,8 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Provider } from "react-redux";
 import { makeStore, AppStore } from "./index";
+import { setFavorites } from "./pokemons/pokemonsSlice";
 
 export default function StoreProvider({
   children,
@@ -13,6 +14,12 @@ export default function StoreProvider({
   if (!storeRef.current) {
     storeRef.current = makeStore();
   }
+
+  useEffect(() => {
+    storeRef.current?.dispatch(
+      setFavorites(JSON.parse(localStorage.getItem("favorites") || "{}"))
+    );
+  }, []);
 
   // eslint-disable-next-line react-hooks/refs
   return <Provider store={storeRef.current}>{children}</Provider>;

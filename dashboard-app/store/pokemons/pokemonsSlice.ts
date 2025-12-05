@@ -1,5 +1,6 @@
 import { SimplePokemon } from "@/app/pokemons";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import { RootState } from "..";
 
 interface PokemonsState {
   favorites: {
@@ -8,18 +9,20 @@ interface PokemonsState {
 }
 
 const initialState: PokemonsState = {
-  favorites: {
-    "1": {
-      id: 1,
-      name: "bulbasaur",
-    },
-  },
+  favorites: {},
 } satisfies PokemonsState as PokemonsState;
 
 const pokemonsSlice = createSlice({
   name: "pokemons",
   initialState,
   reducers: {
+    setFavorites: (
+      state,
+      action: PayloadAction<{ [key: string]: SimplePokemon }>
+    ) => {
+      state.favorites = action.payload;
+    },
+
     toggleFavorite: (state, action: PayloadAction<SimplePokemon>) => {
       const { id } = action.payload;
 
@@ -31,15 +34,20 @@ const pokemonsSlice = createSlice({
       state.favorites[id.toString()] = action.payload;
     },
   },
-  selectors: {
-    selectIsFavorite: (state: PokemonsState, id: number) =>
-      !!state.favorites[id.toString()],
-    selectFavorites: (state: PokemonsState) => Object.values(state.favorites),
-  },
 });
 
-export const { selectIsFavorite, selectFavorites } = pokemonsSlice.selectors;
-
-export const { toggleFavorite } = pokemonsSlice.actions;
+export const { toggleFavorite, setFavorites } = pokemonsSlice.actions;
 
 export const pokemonsReducer = pokemonsSlice.reducer;
+
+const selectFavorites = (state: RootState) => state.pokemons.favorites;
+
+export const selectFavoritesList = createSelector(
+  [selectFavorites],
+  (favorites) => Object.values(favorites)
+);
+
+export const selectIsFavorite = createSelector(
+  [selectFavorites, (_, id: number) => id],
+  (favorites, id) => !!favorites[id.toString()]
+);

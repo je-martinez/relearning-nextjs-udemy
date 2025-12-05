@@ -1,6 +1,7 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, Middleware } from "@reduxjs/toolkit";
 import { counterReducer } from "./counter/counterSlice";
 import { pokemonsReducer } from "./pokemons/pokemonsSlice";
+import { localStorageMiddleware } from "./middlewares/localstorage-middleware";
 
 const reducers = {
   counter: counterReducer,
@@ -8,7 +9,11 @@ const reducers = {
 };
 
 export const makeStore = () => {
-  return configureStore({ reducer: combineReducers(reducers) });
+  return configureStore({
+    reducer: combineReducers(reducers),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(localStorageMiddleware as Middleware),
+  });
 };
 
 // Infer the type of makeStore
