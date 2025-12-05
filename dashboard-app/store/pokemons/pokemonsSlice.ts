@@ -34,10 +34,11 @@ const pokemonsSlice = createSlice({
   selectors: {
     selectIsFavorite: (state: PokemonsState, id: number) =>
       !!state.favorites[id.toString()],
+    selectFavorites: (state: PokemonsState) => Object.values(state.favorites),
   },
 });
 
-export const { selectIsFavorite } = pokemonsSlice.selectors;
+export const { selectIsFavorite, selectFavorites } = pokemonsSlice.selectors;
 
 export const { toggleFavorite } = pokemonsSlice.actions;
 
