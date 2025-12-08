@@ -46,7 +46,10 @@ POSTGRES_USER=admin
 POSTGRES_PASSWORD=admin123
 POSTGRES_DB=admin_todo
 POSTGRES_PORT=5432
+DATABASE_URL="postgresql://admin:admin123@localhost:5432/admin_todo"
 ```
+
+**Note**: The `DATABASE_URL` should match your PostgreSQL credentials. Update it if you change any of the database configuration values.
 
 ### 4. Start the database with Docker Compose
 
@@ -79,7 +82,31 @@ docker compose ps
 
 You should see the `admin-todo-db` container running with a healthy status.
 
-### 6. Run the development server
+### 6. Set up Prisma
+
+Generate the Prisma Client:
+
+```bash
+npx prisma generate
+# or using Makefile:
+make prisma-generate
+```
+
+Run database migrations to create the schema:
+
+```bash
+npx prisma migrate dev
+# or using Makefile:
+make prisma-migrate
+```
+
+This will:
+
+- Create the database tables based on your Prisma schema
+- Generate the Prisma Client for use in your application
+- Apply any pending migrations
+
+### 7. Run the development server
 
 ```bash
 npm run dev
@@ -104,10 +131,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Using Makefile:
 
-- **Start services**: `make up`
-- **Stop services**: `make down`
-- **View logs**: `make logs`
-- **Delete everything**: `make delete`
+- **Start services**: `make up` - Start Docker containers in detached mode with build
+- **Stop services**: `make down` - Stop and remove containers
+- **View logs**: `make logs` - Follow container logs
+- **Delete everything**: `make delete` - Stop containers and remove volumes
 
 ## Database Connection
 
@@ -119,11 +146,40 @@ Once the database is running, you can connect to it using:
 - **User**: `admin` (or the user from your `.env` file)
 - **Password**: `admin123` (or the password from your `.env` file)
 
-### Example connection string:
+### Connection String
+
+The `DATABASE_URL` environment variable is used by Prisma to connect to the database. The format is:
+
+```
+postgresql://[USER]:[PASSWORD]@[HOST]:[PORT]/[DATABASE]
+```
+
+Example:
 
 ```
 postgresql://admin:admin123@localhost:5432/admin_todo
 ```
+
+**Important**: Make sure the `DATABASE_URL` in your `.env` file matches your PostgreSQL configuration.
+
+## Prisma Commands
+
+This project uses [Prisma](https://www.prisma.io/) as the ORM. Here are the most common Prisma commands:
+
+### Using npx directly:
+
+- `npx prisma generate` - Generate the Prisma Client based on your schema
+- `npx prisma migrate dev` - Create and apply a new migration in development
+- `npx prisma migrate deploy` - Apply pending migrations in production
+- `npx prisma studio` - Open Prisma Studio to view and edit data in your database
+- `npx prisma db push` - Push schema changes to the database without creating migrations (dev only)
+
+### Using Makefile:
+
+- `make prisma-generate` - Generate the Prisma Client based on your schema
+- `make prisma-migrate` - Create and apply a new migration in development
+- `make prisma-studio` - Open Prisma Studio to view and edit data in your database
+- `make prisma-push` - Push schema changes to the database without creating migrations (dev only)
 
 ## Available Scripts
 
@@ -132,22 +188,54 @@ postgresql://admin:admin123@localhost:5432/admin_todo
 - `npm run start` - Start the production server
 - `npm run lint` - Run ESLint
 
+## Makefile Commands
+
+The project includes a `Makefile` with convenient shortcuts for common tasks:
+
+### Docker Compose Commands
+
+- `make up` - Start Docker containers in detached mode with build
+- `make down` - Stop and remove containers
+- `make logs` - Follow container logs in real-time
+- `make delete` - Stop containers and remove volumes (cleanup)
+
+### Prisma Commands
+
+- `make prisma-generate` - Generate the Prisma Client
+- `make prisma-migrate` - Create and apply database migrations
+- `make prisma-studio` - Open Prisma Studio (database GUI)
+- `make prisma-push` - Push schema changes without migrations (dev only)
+
 ## Project Structure
 
 ```
 admin-todo/
+├── prisma/
+│   ├── migrations/          # Database migration files
+│   └── schema.prisma        # Prisma schema definition
 ├── src/
-│   └── app/
-│       ├── api/
-│       │   └── health/
-│       │       └── route.ts
-│       ├── layout.tsx
-│       └── page.tsx
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── health/
+│   │   │       └── route.ts
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── generated/
+│   │   └── prisma/          # Generated Prisma Client
+│   └── lib/
+│       └── prisma.ts        # Prisma Client instance
 ├── docker-compose.yml
 ├── Makefile
+├── prisma.config.ts         # Prisma configuration
 ├── .env.example
 └── package.json
 ```
+
+## Database Schema
+
+The project uses Prisma with a PostgreSQL database. The current schema includes:
+
+- **Todo**: A model for managing todo items with fields for title, description, completion status, and timestamps.
 
 ## Learn More
 
