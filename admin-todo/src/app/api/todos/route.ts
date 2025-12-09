@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { createOrUpdateTodoSchema } from "./schema-validator";
 
 const MAX_PAGE_SIZE = 100;
 const DEFAULT_PAGE_SIZE = 10;
@@ -74,13 +75,39 @@ export async function POST(request: Request) {
 
   const { title, description, completed } = body;
 
-  const todo = await prisma.todo.create({
-    data: { title, description, completed },
-  });
+  try {
+    const validatedBody = await createOrUpdateTodoSchema.validate(
+      {
+        title,
+        description,
+        completed,
+      },
+      {
+        abortEarly: false,
+      }
+    );
 
-  return NextResponse.json({
-    success: true,
-    data: todo,
-    message: "Todo created successfully",
-  });
+    const todo = await prisma.todo.create({
+      data: {
+        title: validatedBody.title,
+        description: validatedBody.description,
+        completed: validatedBody.completed,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: todo,
+      message: "Todo created successfully",
+    });
+  } catch (error: unknown) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Validation error",
+        errors: (error as { errors: string[] }).errors,
+      },
+      { status: 400 }
+    );
+  }
 }
