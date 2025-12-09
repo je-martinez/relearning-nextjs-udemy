@@ -84,29 +84,3 @@ export async function POST(request: Request) {
     message: "Todo created successfully",
   });
 }
-
-export async function PUT(request: Request) {
-  const body = await request.json();
-  const { id, title, description, completed } = body;
-  const todo = await prisma.todo.update({
-    where: { id },
-    data: { title, description, completed },
-  });
-  return NextResponse.json({
-    success: true,
-    data: todo,
-    message: "Todo updated successfully",
-  });
-}
-
-export async function DELETE(request: Request) {
-  const { id } = await request.json();
-  const todo = await prisma.todo.delete({
-    where: { id },
-  });
-  return NextResponse.json({
-    success: true,
-    data: todo,
-    message: "Todo deleted successfully",
-  });
-}
