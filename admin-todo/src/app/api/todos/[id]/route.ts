@@ -1,18 +1,26 @@
+import { Todo } from "@/generated/prisma/client";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { validateCreateOrUpdateTodo } from "../schema-validator";
 
 interface Params {
   id: string;
 }
+
+const getTodoById = async (id: string): Promise<Todo | null> => {
+  const todo = await prisma.todo.findUnique({
+    where: { id },
+  });
+  return todo;
+};
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<Params> }
 ) {
   const { id } = await params;
 
-  const todo = await prisma.todo.findUnique({
-    where: { id },
-  });
+  const todo = await getTodoById(id);
 
   if (!todo) {
     return NextResponse.json(
@@ -37,11 +45,33 @@ export async function PUT(
 ) {
   const { id } = await params;
   const body = await request.json();
+
   const { title, description, completed } = body;
+
+  const { success, data, message, errors } = await validateCreateOrUpdateTodo({
+    title,
+    description,
+    completed,
+  });
+
+  if (!success || !data) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: message,
+        errors: errors,
+      },
+      { status: 400 }
+    );
+  }
 
   const updatedTodo = await prisma.todo.update({
     where: { id },
-    data: { title, description, completed },
+    data: {
+      title: data.title,
+      description: data.description,
+      completed: data.completed,
+    },
   });
 
   if (!updatedTodo) {
@@ -66,9 +96,7 @@ export async function DELETE(
   { params }: { params: Promise<Params> }
 ) {
   const { id } = await params;
-  const deletedTodo = await prisma.todo.findUnique({
-    where: { id },
-  });
+  const deletedTodo = await getTodoById(id);
 
   if (!deletedTodo) {
     return NextResponse.json(

@@ -1,51 +1,15 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { createOrUpdateTodoSchema } from "./schema-validator";
-
-const MAX_PAGE_SIZE = 100;
-const DEFAULT_PAGE_SIZE = 10;
-const DEFAULT_PAGE = 1;
-
-const generatePagination = (total: number, page: number, pageSize: number) => {
-  return {
-    currentPage: Number(page),
-    pageSize: Number(pageSize),
-    total,
-    totalPages: Math.ceil(total / Number(pageSize)),
-    hasNextPage: Number(page) < Math.ceil(total / Number(pageSize)),
-  };
-};
-
-const convertPageAndPageSizeToNumbers = (page: number, pageSize: number) => {
-  return {
-    page: isNaN(Number(page)) ? DEFAULT_PAGE : Number(page),
-    pageSize: Math.min(
-      isNaN(Number(pageSize)) ? DEFAULT_PAGE_SIZE : Number(pageSize),
-      MAX_PAGE_SIZE
-    ),
-  };
-};
-
-const validatePageAndPageSize = (page: number, pageSize: number) => {
-  return {
-    page: page < 1 ? DEFAULT_PAGE : page,
-    pageSize: pageSize < 1 ? DEFAULT_PAGE_SIZE : pageSize,
-  };
-};
-
-const getSkipAndTake = (page: number, pageSize: number) => {
-  const { page: validatedPage, pageSize: validatedPageSize } =
-    validatePageAndPageSize(page, pageSize);
-  return {
-    skip: (validatedPage - 1) * validatedPageSize,
-    take: validatedPageSize,
-  };
-};
-
+import { validateCreateOrUpdateTodo } from "./schema-validator";
+import {
+  convertPageAndPageSizeToNumbers,
+  generatePagination,
+  getSkipAndTake,
+} from "@/utils";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const page = searchParams.get("page") || DEFAULT_PAGE;
-  const pageSize = searchParams.get("pageSize") || DEFAULT_PAGE_SIZE;
+  const page = searchParams.get("page");
+  const pageSize = searchParams.get("pageSize");
 
   const { page: validatedPage, pageSize: validatedPageSize } =
     convertPageAndPageSizeToNumbers(Number(page), Number(pageSize));
@@ -76,22 +40,30 @@ export async function POST(request: Request) {
   const { title, description, completed } = body;
 
   try {
-    const validatedBody = await createOrUpdateTodoSchema.validate(
+    const { success, data, message, errors } = await validateCreateOrUpdateTodo(
       {
         title,
         description,
         completed,
-      },
-      {
-        abortEarly: false,
       }
     );
 
+    if (!success || !data) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: message,
+          errors: errors,
+        },
+        { status: 400 }
+      );
+    }
+
     const todo = await prisma.todo.create({
       data: {
-        title: validatedBody.title,
-        description: validatedBody.description,
-        completed: validatedBody.completed,
+        title: data.title,
+        description: data.description,
+        completed: data.completed,
       },
     });
 
@@ -100,14 +72,15 @@ export async function POST(request: Request) {
       data: todo,
       message: "Todo created successfully",
     });
-  } catch (error: unknown) {
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_: unknown) {
     return NextResponse.json(
       {
         success: false,
-        message: "Validation error",
-        errors: (error as { errors: string[] }).errors,
+        message: "An unexpected error occurred",
       },
-      { status: 400 }
+      { status: 500 }
     );
   }
 }
