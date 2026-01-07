@@ -12,7 +12,11 @@ export const metadata = {
 };
 
 const getTodos = async () => {
-  const todos = prisma.todo.findMany();
+  const todos = await prisma.todo.findMany({
+    orderBy: {
+      id: "desc",
+    },
+  });
   return todos;
 };
 

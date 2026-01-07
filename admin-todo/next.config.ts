@@ -4,11 +4,23 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   images: {
-    domains: [
-      "tailus.io",
-      "gravatar.com",
-      "www.shutterstock.com",
-      "img.freepik.com",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "tailus.io",
+      },
+      {
+        protocol: "https",
+        hostname: "gravatar.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.shutterstock.com",
+      },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
+      },
     ],
   },
 };

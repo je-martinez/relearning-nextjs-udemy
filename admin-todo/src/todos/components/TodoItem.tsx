@@ -4,15 +4,19 @@ import styles from "./TodoItem.module.css";
 
 interface TodoItemProps {
   todo: Todo;
+  onToggle: (todo: Todo) => Promise<void>;
 }
 
-export const TodoItem = ({ todo }: TodoItemProps) => {
+export const TodoItem = ({ todo, onToggle }: TodoItemProps) => {
   const todoClass = todo.completed ? styles.todoDone : styles.todoPending;
 
   return (
     <div className={todoClass}>
       <div className="flex flex-col sm:flex-row items-center gap-2">
-        <button className="w-6 h-6 cursor-pointer">
+        <button
+          className="w-6 h-6 cursor-pointer"
+          onClick={() => onToggle(todo)}
+        >
           <CiSquareCheck size={20} color={todo.completed ? "green" : "red"} />
         </button>
         <div className="px-4 flex flex-col gap-2">
