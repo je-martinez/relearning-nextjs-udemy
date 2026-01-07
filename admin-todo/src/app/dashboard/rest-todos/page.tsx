@@ -1,7 +1,7 @@
 export default function RestTodosPage() {
   return (
     <>
-      <h1>Rest Todos Page</h1>
+      <h1 className="text-2xl font-bold text-black">Rest Todos Page</h1>
     </>
   );
 }

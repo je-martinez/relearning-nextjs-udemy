@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { CiBookmarkCheck } from "react-icons/ci";
+import { CiBookmarkCheck, CiServer, CiBoxList } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
 
@@ -12,8 +12,18 @@ const sidebarItems = [
   },
   {
     href: "/dashboard/categories",
-    icon: <CiBookmarkCheck size={30} />,
+    icon: <CiBoxList size={30} />,
     label: "Categories",
+  },
+  {
+    href: "/dashboard/rest-todos",
+    icon: <CiServer size={30} />,
+    label: "Todos (REST)",
+  },
+  {
+    href: "/dashboard/server-actions",
+    icon: <CiServer size={30} />,
+    label: "Server Actions",
   },
 ];
 
@@ -22,7 +32,7 @@ export const Sidebar = () => {
     <>
       <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
         <div>
-          <div className="-mx-6 px-6 py-4">
+          <div className="-mx-6 px-6 py-4 flex items-center justify-center gap-2">
             <Link href="/dashboard" title="home">
               <Image
                 src="https://img.freepik.com/vector-gratis/vector-diseno-degradado-colorido-pajaro_343694-2506.jpg?semt=ais_hybrid&w=740&q=80"
@@ -31,6 +41,7 @@ export const Sidebar = () => {
                 height={64}
               />
             </Link>
+            <h4 className="text-xl font-bold text-gray-600">Admin Todo</h4>
           </div>
 
           <div className="mt-8 text-center">
