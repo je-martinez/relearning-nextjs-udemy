@@ -12,7 +12,7 @@ export const TodoGrid = ({ todos }: TodoGridProps) => {
   const router = useRouter();
 
   const handleToggleTodo = async (todo: Todo) => {
-    const updatedTodo = await apiHelpers.toggleTodo(todo);
+    await apiHelpers.toggleTodo(todo);
     router.refresh(); // Refresh the page to get the updated todos
   };
 
