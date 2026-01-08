@@ -84,3 +84,26 @@ export async function POST(request: Request) {
     );
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function DELETE(_: Request) {
+  try {
+    await prisma.todo.deleteMany({
+      where: { completed: true },
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: "Todos deleted successfully",
+    });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_: unknown) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "An unexpected error occurred",
+      },
+      { status: 500 }
+    );
+  }
+}
