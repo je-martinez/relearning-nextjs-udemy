@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { TodoGrid } from "@/todos/components";
+import { NewTodo, TodoGrid } from "@/todos/components";
 
 export const metadata = {
   title: "Admin Todo | Rest Todos",
@@ -26,6 +26,9 @@ export default async function RestTodosPage() {
   return (
     <>
       <h1 className="text-2xl font-bold text-black">Rest Todos Page</h1>
+      <div className="w-full mt-4 mx-auto">
+        <NewTodo />
+      </div>
       <TodoGrid todos={todos} />
     </>
   );
