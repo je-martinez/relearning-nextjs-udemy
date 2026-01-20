@@ -5,7 +5,7 @@ const delay = (seconds: number) =>
 
 export const toggleTodo = async (id: string, completed: boolean):Promise<Todo> => {
   const updatedTodo = await fetch(`/api/todos/${id}`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify({ completed }),
   });
   const updatedTodoData = await updatedTodo.json();

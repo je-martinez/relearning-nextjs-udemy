@@ -14,6 +14,7 @@ export const TodoGrid = ({ todos, type }: TodoGridProps) => {
   const router = useRouter();
 
   const onToggleTodo = async (id: string, completed: boolean) => {
+    console.log("onToggleTodo", id, completed);
     if (type === "rest") {
       const updatedTodo = await apiHelpers.toggleTodo(id, completed);
       router.refresh();
@@ -28,7 +29,7 @@ export const TodoGrid = ({ todos, type }: TodoGridProps) => {
   return (
     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} onToggle={() => onToggleTodo(todo.id, !todo.completed)} />
+        <TodoItem key={todo.id} todo={todo} onToggle={onToggleTodo} />
       ))}
     </div>
   );

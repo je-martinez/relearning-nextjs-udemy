@@ -91,6 +91,45 @@ export async function PUT(
   });
 }
 
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<Params> }
+) {
+  const { id } = await params;
+  const body = await request.json();
+
+  const { title, description, completed } = body ?? {};
+
+  const data = {} as Partial<Todo>;
+
+  const isNotUndefinedOrNull = (value: unknown) => value !== undefined && value !== null;
+
+  if (isNotUndefinedOrNull(title)) data.title = title as string;
+  if (isNotUndefinedOrNull(description)) data.description = description as string;
+  if (isNotUndefinedOrNull(completed)) data.completed = completed as boolean;
+
+  const updatedTodo = await prisma.todo.update({
+    where: { id },
+    data,
+  });
+
+  if (!updatedTodo) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Todo not found",
+      },
+      { status: 404 }
+    );
+  }
+
+  return NextResponse.json({
+    success: true,
+    data: updatedTodo,
+    message: "Todo updated successfully",
+  });
+}
+
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<Params> }
