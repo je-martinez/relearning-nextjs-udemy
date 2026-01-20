@@ -1,11 +1,10 @@
 import prisma from "@/lib/prisma";
 import { NewTodo, TodoGrid } from "@/todos/components";
-import * as apiHelpers from "@/todos/helpers";
 
 export const metadata = {
-  title: "Admin Todo | Rest Todos",
-  description: "Admin Todo | REST Todos",
-  keywords: "Admin Todo, REST Todos, Todos",
+  title: "Admin Todo | Server Todos",
+  description: "Admin Todo | Server Todos",
+  keywords: "Admin Todo, Server Todos, Todos",
   author: "Admin Todo",
   creator: "Admin Todo",
   publisher: "Admin Todo",
@@ -30,7 +29,7 @@ export default async function RestTodosPage() {
       <div className="w-full mt-4 mx-auto">
         <NewTodo />
       </div>
-      <TodoGrid todos={todos} type="rest" />
+      <TodoGrid todos={todos} type="server"/>
     </>
   );
 }

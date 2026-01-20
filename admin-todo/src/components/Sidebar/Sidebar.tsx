@@ -21,9 +21,9 @@ const sidebarItems = [
     label: "Todos (REST)",
   },
   {
-    href: "/dashboard/server-actions",
+    href: "/dashboard/server-todos",
     icon: <CiServer size={30} />,
-    label: "Server Actions",
+    label: "Todos (Server Actions)",
   },
 ];
 

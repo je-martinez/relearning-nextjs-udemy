@@ -1,12 +1,15 @@
 import { Todo } from "@/generated/prisma/client";
 
-export const toggleTodo = async (todo: Todo) => {
-  const updatedTodo = await fetch(`/api/todos/${todo.id}`, {
+const delay = (seconds: number) =>
+  new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+
+export const toggleTodo = async (id: string, completed: boolean):Promise<Todo> => {
+  const updatedTodo = await fetch(`/api/todos/${id}`, {
     method: "PUT",
-    body: JSON.stringify({ ...todo, completed: !todo.completed }),
+    body: JSON.stringify({ completed }),
   });
   const updatedTodoData = await updatedTodo.json();
-  return updatedTodoData.data as Todo;
+  return updatedTodoData.data;
 };
 
 export const createTodo = async ({
