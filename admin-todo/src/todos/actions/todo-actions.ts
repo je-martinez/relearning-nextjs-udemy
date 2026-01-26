@@ -36,3 +36,20 @@ export const addTodoAction = async (title: string, description: string):Promise<
         };
     }
 };
+
+export const deleteCompletedTodosAction = async ():Promise<{ message: string }> => {
+    try {
+        await prisma.todo.deleteMany({
+            where: { completed: true },
+        });
+        revalidatePath("/dashboard/server-todos");
+        return {
+            message: "Completed todos deleted",
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            message: "Failed to delete completed todos",
+        };
+    }
+};

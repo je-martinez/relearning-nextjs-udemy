@@ -1,1 +1,1 @@
-export { toogleTodoAction, addTodoAction } from "./todo-actions";
+export { toogleTodoAction, addTodoAction, deleteCompletedTodosAction } from "./todo-actions";

@@ -4,7 +4,7 @@ import { IoTrashOutline } from "react-icons/io5";
 import * as apiTodosHelpers from "../helpers";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { addTodoAction } from "../actions";
+import { addTodoAction, deleteCompletedTodosAction } from "../actions";
 
 
 interface NewTodoProps {
@@ -49,8 +49,12 @@ export const NewTodo = ({ type = "rest" }: NewTodoProps) => {
   };
 
   const deleteCompletedTodos = async () => {
-    await apiTodosHelpers.deleteCompletedTodos();
-    router.refresh();
+    if(type === "rest") {
+      await apiTodosHelpers.deleteCompletedTodos();
+      router.refresh();
+    }else {
+      await deleteCompletedTodosAction();
+    }
   };
 
   return (
