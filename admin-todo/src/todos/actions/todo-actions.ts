@@ -21,3 +21,18 @@ export const toogleTodoAction = async (id: string, completed: boolean):Promise<T
     revalidatePath("/dashboard/server-todos");
     return updatedTodo;
 };
+
+export const addTodoAction = async (title: string, description: string):Promise<Todo | { message: string }> => {
+    try {
+        const todo = await prisma.todo.create({
+            data: { title, description, completed: false },
+        });
+        revalidatePath("/dashboard/server-todos");
+        return todo;
+    } catch (error) {
+        console.error(error);
+        return {
+            message: "Failed to add todo",
+        };
+    }
+};

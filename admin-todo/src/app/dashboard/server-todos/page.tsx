@@ -27,7 +27,7 @@ export default async function RestTodosPage() {
     <>
       <h1 className="text-2xl font-bold text-black">Rest Todos Page</h1>
       <div className="w-full mt-4 mx-auto">
-        <NewTodo />
+        <NewTodo type="server" />
       </div>
       <TodoGrid todos={todos} type="server"/>
     </>

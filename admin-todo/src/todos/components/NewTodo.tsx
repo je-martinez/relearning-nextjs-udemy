@@ -4,7 +4,14 @@ import { IoTrashOutline } from "react-icons/io5";
 import * as apiTodosHelpers from "../helpers";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-export const NewTodo = () => {
+import { addTodoAction } from "../actions";
+
+
+interface NewTodoProps {
+  type?: "rest" | "server";
+}
+
+export const NewTodo = ({ type = "rest" }: NewTodoProps) => {
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -20,13 +27,25 @@ export const NewTodo = () => {
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    await apiTodosHelpers.createTodo({ title, description });
-    clearForm();
-    router.refresh();
+
+    if (type === "rest") {
+
+      e.preventDefault();
+      const formData = new FormData(e.target as HTMLFormElement);
+      const title = formData.get("title") as string;
+      const description = formData.get("description") as string;
+      await apiTodosHelpers.createTodo({ title, description });
+      clearForm();
+      router.refresh();
+    }else {
+      e.preventDefault();
+      const formData = new FormData(e.target as HTMLFormElement);
+      const title = formData.get("title") as string;
+      const description = formData.get("description") as string;
+      await addTodoAction(title, description);
+      clearForm();
+      router.refresh();
+    }
   };
 
   const deleteCompletedTodos = async () => {
