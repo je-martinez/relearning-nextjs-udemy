@@ -1,6 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { CiBookmarkCheck, CiServer, CiBoxList } from "react-icons/ci";
+import {
+  CiBookmarkCheck,
+  CiServer,
+  CiBoxList,
+  CiCoffeeBean,
+} from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
 
@@ -24,6 +29,11 @@ const sidebarItems = [
     href: "/dashboard/server-todos",
     icon: <CiServer size={30} />,
     label: "Todos (Server Actions)",
+  },
+  {
+    href: "/dashboard/cookies",
+    icon: <CiCoffeeBean size={30} />,
+    label: "Cookies",
   },
 ];
 
