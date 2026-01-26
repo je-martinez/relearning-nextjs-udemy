@@ -11,8 +11,6 @@ export const toogleTodoAction = async (
   id: string,
   completed: boolean,
 ): Promise<Todo> => {
-  await delay(5);
-
   const todo = await prisma.todo.findUnique({
     where: { id },
   });

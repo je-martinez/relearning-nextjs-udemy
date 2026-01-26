@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import prisma from "@/lib/prisma";
 import { NewTodo, TodoGrid } from "@/todos/components";
 
@@ -29,7 +32,7 @@ export default async function RestTodosPage() {
       <div className="w-full mt-4 mx-auto">
         <NewTodo type="server" />
       </div>
-      <TodoGrid todos={todos} type="server"/>
+      <TodoGrid todos={todos} type="server" />
     </>
   );
 }
