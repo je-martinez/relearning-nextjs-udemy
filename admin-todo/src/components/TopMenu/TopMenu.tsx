@@ -1,6 +1,22 @@
-import { CiBellOn, CiChat1, CiMenuBurger, CiSearch } from "react-icons/ci";
+import { cookies } from "next/headers";
+import {
+  CiChat1,
+  CiMenuBurger,
+  CiSearch,
+  CiShoppingBasket,
+} from "react-icons/ci";
 
-export const TopMenu = () => {
+const getCookieCartServerSide = async (): Promise<{ [id: string]: number }> => {
+  const cart = await cookies();
+  return JSON.parse(cart.get("cart")?.value || "{}");
+};
+
+export const TopMenu = async () => {
+  const cart = await getCookieCartServerSide();
+  const cartSize = Object.values(cart).reduce((acc, curr) => {
+    return acc + (isNaN(curr) ? 0 : curr);
+  }, 0);
+
   return (
     <>
       <div className="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
@@ -31,8 +47,11 @@ export const TopMenu = () => {
             <button className="flex items-center justify-center w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
               <CiChat1 size={25} color="black" />
             </button>
-            <button className="flex items-center justify-center w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
-              <CiBellOn size={25} color="black" />
+            <button className="relative flex items-center justify-center w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
+              <CiShoppingBasket className="relative" size={25} color="black" />
+              <span className="absolute top-1.5 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                {cartSize}
+              </span>
             </button>
           </div>
         </div>

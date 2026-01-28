@@ -1,4 +1,10 @@
+"use client";
+import {
+  addProductToCart,
+  removeProductFromCart,
+} from "@/shopping-cart/actions/actions";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { IoAddCircleOutline, IoTrashOutline } from "react-icons/io5";
 
 interface ProductCardProps {
@@ -10,16 +16,29 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({
+  id,
   name,
   price,
   rating,
   image,
 }: ProductCardProps) => {
+  const router = useRouter();
+
   const formatPrice = (price: number) => {
     if (price === 0) {
       return "Free";
     }
     return `$${price.toFixed(2)}`;
+  };
+
+  const onAddToCart = async (id: string) => {
+    await addProductToCart(id);
+    router.refresh();
+  };
+
+  const onRemoveFromCart = async (id: string) => {
+    await removeProductFromCart(id);
+    router.refresh();
   };
 
   return (
@@ -59,10 +78,16 @@ export const ProductCard = ({
           </span>
 
           <div className="flex">
-            <button className="text-white mr-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <button
+              onClick={() => onAddToCart(id)}
+              className="text-white mr-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
               <IoAddCircleOutline size={25} />
             </button>
-            <button className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+            <button
+              onClick={() => onRemoveFromCart(id)}
+              className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+            >
               <IoTrashOutline size={20} />
             </button>
           </div>

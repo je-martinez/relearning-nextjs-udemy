@@ -1,5 +1,5 @@
 import { products } from "@/data/product";
-import { ProductCard } from "@/shopping-cart";
+import { ProductCard } from "@/shopping-cart/components";
 
 export default function ShoppingCartPage() {
   return (
