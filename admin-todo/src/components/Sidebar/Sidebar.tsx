@@ -5,6 +5,7 @@ import {
   CiServer,
   CiBoxList,
   CiCoffeeBean,
+  CiShoppingCart,
 } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
@@ -34,6 +35,11 @@ const sidebarItems = [
     href: "/dashboard/cookies",
     icon: <CiCoffeeBean size={30} />,
     label: "Cookies",
+  },
+  {
+    href: "/dashboard/shopping-cart",
+    icon: <CiShoppingCart size={30} />,
+    label: "Shopping Cart",
   },
 ];
 
