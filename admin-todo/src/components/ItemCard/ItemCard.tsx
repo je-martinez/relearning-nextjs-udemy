@@ -6,6 +6,10 @@ import Image from "next/image";
 import { IoAddCircleOutline, IoRemove } from "react-icons/io5";
 
 import { useRouter } from "next/navigation";
+import {
+  decrementProductQuantity,
+  incrementProductQuantity,
+} from "@/shopping-cart/actions/actions";
 
 interface Props {
   product: Product;
@@ -16,12 +20,12 @@ export const ItemCard = ({ product, quantity }: Props) => {
   const router = useRouter();
 
   function onAddToCart() {
-    //TODO: addProductToCart(product.id);
+    incrementProductQuantity(product.id);
     router.refresh();
   }
 
   function onRemoveItem() {
-    //TODO: removeSingleItemFromCart(product.id);
+    decrementProductQuantity(product.id);
     router.refresh();
   }
 

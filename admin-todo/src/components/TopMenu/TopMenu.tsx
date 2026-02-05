@@ -17,6 +17,7 @@ export const TopMenu = async () => {
   const cartSize = Object.values(cart).reduce((acc, curr) => {
     return acc + (isNaN(curr) ? 0 : curr);
   }, 0);
+  const cartSizeLabel = cartSize > 9 ? "9+" : cartSize;
 
   return (
     <>
@@ -54,7 +55,7 @@ export const TopMenu = async () => {
             >
               <CiShoppingBasket className="relative" size={25} color="black" />
               <span className="absolute top-1.5 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                {cartSize}
+                {cartSizeLabel}
               </span>
             </Link>
           </div>

@@ -27,3 +27,22 @@ export const removeProductFromCart = async (id: string) => {
   }
   await setCookie("cart", JSON.stringify(cart));
 };
+
+export const incrementProductQuantity = async (id: string) => {
+  const cart = await getCookieCart();
+  if (cart[id]) {
+    cart[id] = cart[id] + 1;
+  }
+  await setCookie("cart", JSON.stringify(cart));
+};
+
+export const decrementProductQuantity = async (id: string) => {
+  const cart = await getCookieCart();
+  if (cart[id]) {
+    cart[id] = cart[id] - 1;
+  }
+  if (cart[id] === 0) {
+    delete cart[id];
+  }
+  await setCookie("cart", JSON.stringify(cart));
+};

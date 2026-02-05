@@ -23,7 +23,7 @@ const populateCartItems = (cartItems: { [id: string]: number }): CartItem[] => {
       if (!product) return null;
       return { product, quantity: cartItems[id] };
     })
-    .filter((item) => item?.product !== null) as CartItem[];
+    .filter((item) => item !== null) as CartItem[];
 };
 
 const getProductsFromCart = async () => {
