@@ -1,4 +1,4 @@
-import { ItemCard } from "@/components";
+import { ItemCard, WidgetItem } from "@/components";
 import { Product, products } from "@/data/product";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -36,15 +36,36 @@ const getProductsFromCart = async () => {
 export default async function CartPage() {
   const cartItems = await getProductsFromCart();
 
+  const totalPrice = cartItems.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0,
+  );
+
+  const taxes = totalPrice * 0.15;
+  const totalWithTaxes = totalPrice + taxes;
+
   return (
-    <div>
+    <div className="flex flex-col gap-2 w-full">
       <h1 className="text-2xl font-bold text-black">Cart Page</h1>
-      <hr className="mb-2" />
-      <div className="flex flex-col sm:flex-row gap-2 w-full">
+      <div className="flex flex-col sm:flex-row gap-2 w-full mt-4">
         <div className="flex flex-col sm:w-8/12 gap-2 w-full">
           {cartItems.map((item) => (
             <ItemCard key={item.product.id} {...item} />
           ))}
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 w-full mt-4">
+        <div className="flex flex-col gap-2">
+          <span className="w-full text-xl font-bold text-black">
+            <WidgetItem title="Total Price">
+              <span className="w-full text-3xl text-center font-bold text-black">
+                ${totalWithTaxes.toFixed(2)}
+              </span>
+              <span className="w-full text-sm text-center  text-gray-500">
+                Taxes(15%): ${taxes.toFixed(2)}
+              </span>
+            </WidgetItem>
+          </span>
         </div>
       </div>
     </div>
