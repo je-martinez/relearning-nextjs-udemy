@@ -74,18 +74,20 @@ export const Sidebar = () => {
             <span className="hidden text-gray-400 lg:block">Admin</span>
           </div>
 
+          <div className="px-6 -mx-6 pt-4 flex justify-center items-center">
+            <button className="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group cursor-pointer">
+              <CiLogout />
+              <span className="group-hover:text-gray-700 cursor-pointer">
+                Logout
+              </span>
+            </button>
+          </div>
+
           <ul className="space-y-2 tracking-wide mt-8">
             {sidebarItems.map((item) => (
               <SidebarItem key={item.href} {...item} />
             ))}
           </ul>
-        </div>
-
-        <div className="px-6 -mx-6 pt-4 flex justify-between items-center border-t">
-          <button className="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-            <CiLogout />
-            <span className="group-hover:text-gray-700">Logout</span>
-          </button>
         </div>
       </aside>
     </>
