@@ -9,6 +9,8 @@ import {
 } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth-options";
 
 const sidebarItems = [
   {
@@ -43,7 +45,17 @@ const sidebarItems = [
   },
 ];
 
-export const Sidebar = () => {
+const fallbackImage =
+  "https://gravatar.com/avatar/b33a6f907ff260a5f3106c2df5b97b79?s=400&d=robohash&r=x";
+
+const fallbackName = "Guest";
+
+export const Sidebar = async () => {
+  const session = await getServerSession(authOptions);
+  const { user } = session ?? {};
+  const name = user?.name ?? fallbackName;
+  const image = user?.image ?? fallbackImage;
+
   return (
     <>
       <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
@@ -62,14 +74,14 @@ export const Sidebar = () => {
 
           <div className="mt-8 text-center">
             <Image
-              src="https://gravatar.com/avatar/b33a6f907ff260a5f3106c2df5b97b79?s=400&d=robohash&r=x"
+              src={image}
               alt="user avatar"
               className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28"
               width={128}
               height={128}
             />
             <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">
-              Cynthia J. Watts
+              {name}
             </h5>
             <span className="hidden text-gray-400 lg:block">Admin</span>
           </div>
