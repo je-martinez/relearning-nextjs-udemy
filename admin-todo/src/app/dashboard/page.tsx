@@ -1,6 +1,7 @@
 import { ArrowRevenue } from "@/components";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 import { authOptions } from "@/auth-options";
+import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -8,9 +9,9 @@ export default async function DashboardPage() {
   return (
     <>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="md:col-span-2 lg:col-span-1">
+        <WelcomeLoggedInUser session={session} />
+        <div className="md:grid-cols-2 lg:grid-cols-1">
           <div className="max-w-full max-h-96 p-8 space-y-6 rounded-xl border border-gray-200 bg-white">
-            <WelcomeLoggedInUser />
             <div className="flex flex-col gap-2 w-full h-full">
               <h5 className="text-xl text-gray-600 text-center">
                 Global Activities
@@ -30,11 +31,24 @@ export default async function DashboardPage() {
   );
 }
 
-export const WelcomeLoggedInUser = async () => {
-  const session = await getServerSession(authOptions);
+export const WelcomeLoggedInUser = async ({
+  session,
+}: {
+  session: Session | null;
+}) => {
+  if (!session) {
+    return redirect("/api/auth/signin");
+  }
+  const { user } = session;
   return (
-    <div>
-      <h1>Welcome {session?.user?.name}</h1>
+    <div className="max-w-full max-h-96 p-8 space-y-6 rounded-xl border border-gray-200 bg-white">
+      <div className="flex flex-col gap-2 w-full h-full">
+        <h5 className="text-xl text-gray-600 text-center">Welcome Back!</h5>
+        <div className="flex justify-center gap-4">
+          <h3 className="text-3xl font-bold text-gray-700">{user?.name}</h3>
+        </div>
+        <span className="block text-center text-gray-500">{user?.email}</span>
+      </div>
     </div>
   );
 };
