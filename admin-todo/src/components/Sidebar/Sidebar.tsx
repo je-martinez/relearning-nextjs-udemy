@@ -6,6 +6,7 @@ import {
   CiBoxList,
   CiCoffeeBean,
   CiShoppingCart,
+  CiUser,
 } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 import { SidebarItem } from "./SidebarItem";
@@ -13,6 +14,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth-options";
 
 const sidebarItems = [
+  {
+    href: "/dashboard/profile",
+    icon: <CiUser size={30} />,
+    label: "Profile (Client Side)",
+  },
   {
     href: "/dashboard",
     icon: <CiBookmarkCheck size={30} />,
