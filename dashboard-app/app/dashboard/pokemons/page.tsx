@@ -1,3 +1,4 @@
+import { cacheTag, revalidateTag } from "next/cache";
 import { PokemonGrid } from "../../pokemons/components/PokemonGrid";
 import { PokemonResponse, SimplePokemon } from "@/app/pokemons";
 const getPokemons = async ({
@@ -27,6 +28,12 @@ export const metadata = {
 };
 
 export default async function PokemonsPage() {
+  'use cache';
+  cacheTag("pokemons");
+
+  //To revalidate cache tag
+  // revalidateTag("pokemons", "force-cache");
+  
   const pokemons = await getPokemons({ limit: 250, offset: 0 });
   return (
     <div className="flex flex-col">

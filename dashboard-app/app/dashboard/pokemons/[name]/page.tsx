@@ -1,6 +1,7 @@
 import { PokemonDetailsResponse, PokemonResponse } from "@/app/pokemons";
 import { Result } from "@/app/pokemons/interfaces/pokemons-response";
 import { Metadata } from "next";
+import { cacheTag } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -64,7 +65,11 @@ const getPokemon = async (name: string): Promise<PokemonDetailsResponse> => {
 };
 
 export default async function PokemonPage({ params }: Props) {
+  'use cache';
   const { name } = await params;
+
+  cacheTag(`pokemon-${name}`);
+  
   const pokemon = await getPokemon(name);
   const { sprites } = pokemon;
   return (

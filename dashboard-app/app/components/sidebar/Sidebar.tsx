@@ -57,10 +57,10 @@ export const Sidebar = () => {
           <span>
             <Image
               className="rounded-full w-8 h-8"
-              src="https://avatar.iran.liara.run/public/32"
+              src="https://i.pravatar.cc/42"
               alt=""
-              width={32}
-              height={32}
+              width={42}
+              height={42}
             />
           </span>
           <span className="text-sm md:text-base font-bold">

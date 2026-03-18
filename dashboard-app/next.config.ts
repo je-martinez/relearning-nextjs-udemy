@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  cacheComponents:true,
   images: {
     remotePatterns: [
       {
@@ -11,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "raw.githubusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "i.pravatar.cc",
+      }
     ],
   },
 };
