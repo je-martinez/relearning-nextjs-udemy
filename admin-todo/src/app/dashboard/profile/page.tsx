@@ -25,6 +25,18 @@ export default function ProfilePage() {
               <td className="text-gray-500">Session User Image:</td>
               <td className="text-gray-500">{session?.user?.image}</td>
             </tr>
+            <tr>
+              <td className="text-gray-500">Session User Roles:</td>
+              <td className="text-gray-500">{session?.user?.roles?.join(", ")}</td>
+            </tr>
+            <tr>
+              <td className="text-gray-500">Session User ID:</td>
+              <td className="text-gray-500">{session?.user?.id}</td>
+            </tr>
+            <tr>
+              <td className="text-gray-500">Session User Is Active:</td>
+              <td className="text-gray-500">{session?.user?.isActive ? "Yes" : "No"}</td>
+            </tr>
           </tbody>
         </table>
       </div>

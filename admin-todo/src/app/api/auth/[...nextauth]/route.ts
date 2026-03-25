@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth, { AuthOptions, Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -24,19 +25,26 @@ export const authOptions = {
     async signIn() {
       return true;
     },
-    async jwt({ token }: { token: any }) {
+    async jwt({ token }: { token: JWT }) {
       const dbUser = await prisma.user.findUnique({
         where: {
           email: token.email ?? "unknown",
         },
       });
+      if(!dbUser?.isActive) {
+        return null;
+      }
       token.roles = dbUser?.roles ?? ["unknown"];
       token.id = dbUser?.id ?? "unknown";
+      token.isActive = dbUser?.isActive ?? false;
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
-      session.user.id = token.id;
-      session.user.roles = token.roles;
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.roles = token.roles;
+        session.user.isActive = token.isActive;
+      }
       return session;
     },
   },
